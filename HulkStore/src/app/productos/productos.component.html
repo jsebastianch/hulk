@@ -1,0 +1,68 @@
+<p-growl [(value)]="msgs"></p-growl>
+<p>
+	<p-dataTable [value]="productos" selectionMode="single" [(selection)]="productoSeleccionado" dataKey="codigo">
+		<p-header>Inventario</p-header>
+		<p-column field="codigo" header="C&oacute;digo"></p-column>
+		<p-column field="nombre" header="Nombre"></p-column>
+		<p-column field="tipo" header="Tipo"></p-column>
+		<p-column field="valorUnitario" header="Valor Unitario"></p-column>
+		<p-column field="existencias" header="Existencias"></p-column>
+	</p-dataTable>
+</p>
+<button type="text" (click)="showDialogNuevo()" pButton label="Nuevo Producto"></button>
+
+<button type="text" (click)="showDialog()" [disabled]="productoSeleccionado.codigo == null" pButton label="Registrar Entrada"></button>
+
+<button type="text" (click)="showDialogSalida()" [disabled]="deshabilitar()" pButton label="Registrar Salida"></button>
+
+
+<p-dialog header="Entrada de Producto" [(visible)]="display" modal="modal" [responsive]="true" [width]="350" [minWidth]="200"
+ [minY]="70">
+	<span>
+		<h3 class="first">Cantidad</h3>
+		<input id="input" type="number" pInputText [(ngModel)]="cantidad" step="1" min="1" required>
+
+	</span>
+	<p-footer>
+		<button type="button" pButton icon="fa-check" (click)="aceptar()" label="Aceptar"></button>
+		<button type="button" pButton icon="fa-close" (click)="display=false" label="Cancelar"></button>
+	</p-footer>
+</p-dialog>
+
+
+
+<p-dialog header="Salida de Producto" [(visible)]="displaySalida" modal="modal" [responsive]="true" [width]="350"
+ [minWidth]="200" [minY]="70">
+	<span>
+		<h3 class="first">Cantidad</h3>
+		<input id="input" type="number" pInputText [(ngModel)]="cantidad" step="1" max="{{productoSeleccionado.existencias}}"
+		 min="1">
+		<!-- <p-inputMask [(ngModel)]="cantidad" mask="999999999" slotChar="" ></p-inputMask> -->
+
+	</span>
+	<p-footer>
+		<button type="button" pButton icon="fa-check" (click)="aceptar()" label="Aceptar"></button>
+		<button type="button" pButton icon="fa-close" (click)="displaySalida=false" label="Cancelar"></button>
+	</p-footer>
+</p-dialog>
+
+
+<p-dialog header="Nuevo Producto" [(visible)]="displayNuevo" modal="modal" [responsive]="true" [width]="500" [minWidth]="200"
+ [minY]="70">
+	<span>
+		<h3 class="first">Código</h3>
+		<input id="input" type="text" size="15" pInputText [(ngModel)]="codigo">
+		<h3 class="first">Nombre</h3>
+		<input id="input" type="text" size="30" pInputText [(ngModel)]="nombre">
+		<h3 class="first">Tipo</h3>
+		<input id="input" type="text" size="30" pInputText [(ngModel)]="tipo">
+		<h3 class="first">Valor</h3>
+		<input id="input" type="number" pInputText [(ngModel)]="valor" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01">
+		<h3 class="first">Cantidad</h3>
+		<input id="input" type="number" pInputText [(ngModel)]="cantidad" step="1" min="1">
+	</span>
+	<p-footer>
+		<button type="button" pButton icon="fa-check" (click)="guardarNuevo()" label="Aceptar"></button>
+		<button type="button" pButton icon="fa-close" (click)="displayNuevo=false" label="Cancelar"></button>
+	</p-footer>
+</p-dialog>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.prueba.store</groupId>
+  <artifactId>HulkStoreServices</artifactId>
+  <version>1</version>
+  <packaging>pom</packaging>
+  <name>HulkStoreServices</name>
+  <modules>
+    <module>HulkStore-ear</module>
+    <module>HulkStore-web</module>
+    <module>HulkStore-ejb</module>
+  </modules>
+  
+  <properties>
+  	 <!-- JBoss dependency versions -->
+    <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
+  </properties>
+  
+  <build>
+    <pluginManagement>
+        <plugins>
+            <!-- The WildFly plugin deploys your ear to a local JBoss
+            AS container -->
+            <!-- Due to Maven's lack of intelligence with EARs we need 
+            to configure the wildfly maven plugin to skip deployment for all modules.
+            We then enable it specifically in the ear module. -->
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.maven.plugin}</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </pluginManagement>
+</build>
+</project>
